@@ -88,6 +88,28 @@ public:
         return *this;
     }
 
+    MyQueue& operator*(const MyQueue &c )
+    {
+        MyQueue Q(size_arr);
+        int temp,one,two;
+        if (size_arr==c.size_arr)
+        {
+           for (int i=0;i<index;i++)
+            {
+                one=arr[i].getNum();
+                two=c.arr[i].getNum();
+                temp=one*two;
+                Q<<temp;
+            }
+        }
+        else
+        {
+            cout<<"invalid Multiply";
+        }
+
+        return Q;
+    }
+
     MyQueue& operator=(const MyQueue &c )
     {
         MyQueue Q(c.size_arr);
@@ -117,11 +139,11 @@ public:
         }
         return ret;
     }
-    
     ~MyQueue()
     {
         delete[] arr;
     }
+
 
     friend ostream & operator << (ostream &out, const MyQueue &c)
     {
@@ -138,7 +160,7 @@ public:
 
 int main ()
 {
-    MyQueue q0(20);
+    /*MyQueue q0(20);
     q0 <<1<< Child() << Child(2) << Child(3);
     cout << q0;
 
@@ -153,11 +175,27 @@ int main ()
     cout<<q2;
 
     MyQueue q3(q0.getSize());
+
     q3<<1<< Child(2) << Child(7);
     q3[2] += q1[1];
     cout<<q3;
-    cout<<q3[2];
+    cout<<q3[2];*/
 
+    MyQueue q0(20);
+    q0 << 1 << Child() << Child(2) << Child(3);
+    cout << q0; // 1, 0, 2, 3
+    MyQueue q1(3);
+    q1 << 30 << 20 << 50;
+    q1 << q0; // Appending two queues
+    cout << q1; // 30, 20, 50, 1, 0, 2, 3
+    MyQueue q2(q0); // 1, 0, 2, 3
+    q2 == q0 ? cout<<"equal\n": cout<<"not equal\n"; // equal
+    MyQueue q3(q0.getSize());
+    // Multiply both queues and // insert the output into a new queue
+    q3 << q2 * q0;
+    cout << q3; // 1, 0, 4 , 9
+    q3[2] += q1[1];
+    cout<<q3[2]; // 24
 
 
 
