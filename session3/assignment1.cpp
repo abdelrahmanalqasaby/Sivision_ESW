@@ -117,7 +117,11 @@ public:
         }
         return ret;
     }
-
+    
+    ~MyQueue()
+    {
+        delete[] arr;
+    }
 
     friend ostream & operator << (ostream &out, const MyQueue &c)
     {
