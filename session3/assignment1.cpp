@@ -64,6 +64,10 @@ public:
     {
         return size_arr;
     }
+    void setIndx()
+    {
+        index=0;
+    }
     MyQueue& operator<<(int Number)
     {
         arr[index].setNum(Number);
@@ -78,17 +82,22 @@ public:
     }
     MyQueue& operator<<(const MyQueue &c )
     {
-        size_arr+=c.size_arr;
+        int siz=size_arr+c.size_arr;
+        MyQueue Q(siz);
+        for (int i=0;i<index;i++)
+        {
+            Q<<arr[i];
+        }
         for (int i=0;i<c.index;i++)
         {
-            arr[index].setNum(c.arr[i].getNum());
-            index++;
+            Q<<(c.arr[i]);
         }
+        *this=Q;
 
         return *this;
     }
 
-    MyQueue& operator*(const MyQueue &c )
+    MyQueue operator*(const MyQueue &c )
     {
         MyQueue Q(size_arr);
         int temp,one,two;
@@ -112,13 +121,18 @@ public:
 
     MyQueue& operator=(const MyQueue &c )
     {
-        MyQueue Q(c.size_arr);
+        if (arr != NULL)
+        {
+            delete[] arr;
+        }
+
+        arr= new Child[size_arr];
+        setIndx();
         for (int i=0;i<c.index;i++)
         {
-            arr[index].setNum(c.arr[i].getNum());
-            index++;
+            *this<<(c.arr[i]);
         }
-        return Q;
+        return *this;
     }
 
     Child& operator[](int NDEX)
@@ -131,7 +145,18 @@ public:
         bool ret;
         if (size_arr==c.size_arr)
         {
-            ret=true;
+            for (int i=0;i<c.index;i++)
+            {
+                if (arr[i]!=(c.arr[i]))
+                {
+                    ret=false;
+                    break;
+                }
+                else
+                {
+                    ret=true;
+                }
+            }
         }
         else
         {
@@ -141,7 +166,11 @@ public:
     }
     ~MyQueue()
     {
-        delete[] arr;
+       if (arr != NULL)
+        {
+            delete[] arr;
+        }
+        size_arr=0;
     }
 
 
@@ -160,34 +189,13 @@ public:
 
 int main ()
 {
-    /*MyQueue q0(20);
-    q0 <<1<< Child() << Child(2) << Child(3);
-    cout << q0;
-
-    MyQueue q1(3);
-    q1 << 30 << 20 << 50;
-    q1 << q0; // Appending two queues
-    cout << q1;
-    MyQueue q4=q1;
-    cout<<q4;
-    MyQueue q2(q0); // 1, 0, 2, 3
-    q2 == q0 ? cout<<"equal\n": cout<<"not equal\n"; // equal // 1, 0, 2, 3
-    cout<<q2;
-
-    MyQueue q3(q0.getSize());
-
-    q3<<1<< Child(2) << Child(7);
-    q3[2] += q1[1];
-    cout<<q3;
-    cout<<q3[2];*/
-
     MyQueue q0(20);
     q0 << 1 << Child() << Child(2) << Child(3);
     cout << q0; // 1, 0, 2, 3
     MyQueue q1(3);
     q1 << 30 << 20 << 50;
     q1 << q0; // Appending two queues
-    cout << q1; // 30, 20, 50, 1, 0, 2, 3
+    cout << "Q1: "<<q1; // 30, 20, 50, 1, 0, 2, 3
     MyQueue q2(q0); // 1, 0, 2, 3
     q2 == q0 ? cout<<"equal\n": cout<<"not equal\n"; // equal
     MyQueue q3(q0.getSize());
